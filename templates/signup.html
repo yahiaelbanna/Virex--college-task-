@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} - Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='icons/icon.css') }}">
+</head>
+<body class="grid-bg">
+    <form action="/signup" method="post" class="auth-form">
+        <h2>Welcome to {{app_name}}👋</h2>
+        <p>Create an account</p>
+        {% if errors %}
+            <div class="errors-container">
+                <ul>
+                    {% for error in errors %}
+                        <li>
+                            {{error}}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {%endif%}
+        <input type="text" placeholder="Enter your name" name="name" value="{{ data.name if data else '' }}">
+        <input type="email" placeholder="Enter your email" name="email" value="{{ data.email if data else '' }}">
+        <div id="password-container">
+            <input type="password" placeholder="Enter your password" name="password">
+            <span><i class="hgi hgi-stroke hgi-view"></i></span>
+
+        </div>
+        <button>Signup</button>
+        <hr style="margin: 7px 0;">
+        <div style="text-align: center;">
+            Already have account? <a href="/login">Login</a>
+        </div>
+    </form>
+    
+    <script src="{{ url_for('static', filename='script/auth.js') }}"></script>
+</body>
+</html>
