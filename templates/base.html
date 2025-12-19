@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='icons/icon.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li class="active">
+                <a href=""><i class="hgi hgi-stroke hgi-home-01"></i> Home</a>
+            </li>
+            <li>
+                <a href=""><i class="hgi hgi-stroke hgi-share-07"></i> Social</a>
+            </li>
+            <li>
+                <a href=""><i class="hgi hgi-stroke hgi-user"></i> Profile</a>
+            </li>
+        </ul>
+        <div class="avatar">
+            <img src="" alt="Avatar">
+        </div>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
