@@ -364,6 +364,25 @@ def socialProfile(username):
     conn.commit()
     return render_template('socialProfile.html', user=user,social=social,soc_icon=soc_icon)
 
+@app.route('/redirect')
+def redirectUrl():
+    data = request.args
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        '''
+        UPDATE social SET
+            click = click + 1
+        WHERE url = ? AND user_id=?
+        ''',
+        (data['url'], data['us'])
+    )
+    
+    conn.commit()
+    return redirect(data['url'])
+
+    
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)

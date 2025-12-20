@@ -22,7 +22,7 @@
             <div class="grid-2">
                 {% for soc in social %}
                     {%if soc.url != '' and soc.visible%}
-                        <a href="{{soc.url}}">
+                        <a href="/redirect?url={{soc.url}}&us={{user.id}}">
                             <i class="hgi hgi-stroke hgi-{{soc_icon[soc.social]}}"></i>
                             <p>{{soc.social}} account</p>
                         </a>
