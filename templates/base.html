@@ -18,7 +18,7 @@
                 <a href="{{url_for('social')}}"><i class="hgi hgi-stroke hgi-share-07"></i> Social</a>
             </li>
             <li {% if request.path == '/profile' %}class="active"{% endif %}>
-                <a href=""><i class="hgi hgi-stroke hgi-user"></i> Profile</a>
+                <a href="{{url_for('profile')}}"><i class="hgi hgi-stroke hgi-user"></i> Profile</a>
             </li>
         </ul>
         <div class="avatar">

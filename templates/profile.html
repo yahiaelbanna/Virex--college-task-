@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Your social{% endblock %}
+{% block content %}
+<form class="profile-form">
+    <div class="avatar-st">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="avatar" id="avatar">
+        <input type="file" accept=".jpg, .jpeg" id="avatarInput">
+    </div>
+    <div class="grid-2">
+        <input type="text" placeholder="Your username" value="{{user.username}}">
+        <input type="text" placeholder="Your email" value="{{user.email}}">
+        <input type="text" placeholder="Your name" value="{{user.name}}">
+        <input type="text" placeholder="Your country" value="{{user.country}}">
+    </div>
+    <button style="width: 100%;margin: 20px 0;">Save</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='script/profile.js') }}" ></script>
+{% endblock %}

@@ -3,6 +3,7 @@ import sqlite3
 import hashlib
 import re
 from datetime import date
+import random
 
 app = Flask(__name__)
 
@@ -17,11 +18,12 @@ def hash_password(password):
 
 #Database_setup
 def init_db():
-    conn = sqlite3.connect('arcanum.db')
+    conn = sqlite3.connect('virex.db')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username VARCHAR(100) NOT NULL UNIQUE,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE,
             password VARCHAR(200) NOT NULL
@@ -32,7 +34,7 @@ def init_db():
 
 # Show_all_users
 def get_users():
-    conn = sqlite3.connect('arcanum.db')
+    conn = sqlite3.connect('virex.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users')
     users = cursor.fetchall()
@@ -41,7 +43,7 @@ def get_users():
 
 # CHECK IF THE USER EMAIL EXIST METHOD
 def get_user_with_email(email):
-    conn = sqlite3.connect('arcanum.db')
+    conn = sqlite3.connect('virex.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users where email = ?',(email,))
@@ -51,9 +53,20 @@ def get_user_with_email(email):
         return None
     return dict(row)
 
+def get_user_with_username(username):
+    conn = sqlite3.connect('virex.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users where username = ?',(username,))
+    row = cursor.fetchone()
+    conn.close()
+    if row is None:
+        return None
+    return dict(row)
+
 # GET THE USER INFO BASED ON HIS ID
 def get_user(id):
-    conn = sqlite3.connect('arcanum.db')
+    conn = sqlite3.connect('virex.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users where id = ?',(id,))
@@ -74,9 +87,15 @@ def get_user(id):
 
 # Create_account_method
 def signup(data):
-    conn = sqlite3.connect('arcanum.db', timeout=10)
+    username = data['name'].replace(" ", "")
+    user = get_user_with_email(username)
+    while user is not None:
+        username = data['name'].replace(" ", "") + str(random.randint(1, 725))
+        user = get_user_with_username(username)
+
+    conn = sqlite3.connect('virex.db', timeout=10)
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', (data['name'], data['email'], hash_password(data['password'])))
+    cursor.execute('INSERT INTO users (username,name, email, password) VALUES (?, ?, ?, ?)', (username,data['name'], data['email'], hash_password(data['password'])))
     conn.commit()
     user_id = cursor.lastrowid
     conn.close()
@@ -190,6 +209,23 @@ def social():
         return redirect(url_for('loginPage'))
     user = get_user(user_id)
     return render_template('social.html', user=user)
+
+
+'''
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::Profile PAGE::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+'''
+
+@app.route('/profile')
+def profile():
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        return redirect(url_for('loginPage'))
+    user = get_user(user_id)
+    return render_template('profile.html', user=user)
 
 if __name__ == '__main__':
     init_db()
