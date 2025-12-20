@@ -110,3 +110,14 @@ a{
     paint-order: stroke fill;
     -webkit-paint-order: stroke fill; 
 }
+
+[class^="grid-"]{
+    display: grid;
+    gap: 15px;
+}
+.grid-4{
+    grid-template-columns: repeat(4,1fr);
+}
+.grid-2{
+    grid-template-columns: repeat(2,1fr);
+}

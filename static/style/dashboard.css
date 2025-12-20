@@ -118,16 +118,7 @@ footer p{
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
-[class^="grid-"]{
-    display: grid;
-    gap: 15px;
-}
-.grid-4{
-    grid-template-columns: repeat(4,1fr);
-}
-.grid-2{
-    grid-template-columns: repeat(2,1fr);
-}
+
 .card{
     border: 1px solid oklch(from var(--dark-amethyst) l c h / 0.4);
     border-radius: 7px;

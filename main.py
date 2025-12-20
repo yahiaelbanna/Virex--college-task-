@@ -214,7 +214,7 @@ def social():
 '''
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-::::::::::::::::::::::Profile PAGE::::::::::::::::::::::
+::::::::::::::::::::::PROFILE PAGE::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 '''
@@ -226,6 +226,23 @@ def profile():
         return redirect(url_for('loginPage'))
     user = get_user(user_id)
     return render_template('profile.html', user=user)
+
+
+'''
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::SOCIAL PROFILE PAGE:::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+'''
+
+@app.route('/@<username>')
+def socialProfile(username):
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        return redirect(url_for('loginPage'))
+    user = get_user_with_username(username)
+    return render_template('socialProfile.html', user=user)
 
 if __name__ == '__main__':
     init_db()
