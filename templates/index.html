@@ -1,5 +1,60 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
+    <div class="welcome-card">
+        <h1>Welcome back, {{user.name}} 🎉</h1>
+        <p>Let's make the world know about you !</p>
+    </div>
+    <div class="grid-4 py-5">
+        <div class="card">
+            <span class="card-icon"><i class="hgi hgi-stroke hgi-property-view"></i> </span>
+            <div class="card-body">
+                <h3 class="card-title">Total views</h3>
+                <p>400</p>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">
+                <i class="hgi hgi-stroke hgi-cursor-pointer-01"></i>
+            </span>
+            <div class="card-body">
+                <h3 class="card-title">Total Clicks</h3>
+                <p>270</p>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">
+                <i class="hgi hgi-stroke hgi-link-06"></i>
+            </span>
+            <div class="card-body">
+                <h3 class="card-title">Public Links</h3>
+                <p>7</p>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">
+                <i class="hgi hgi-stroke hgi-attachment-square"></i>
+            </span>
+            <div class="card-body">
+                <h3 class="card-title">Draft Links</h3>
+                <p>4</p>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="chart"></div> -->
+    <div class="grid-2">
+        <div class="card">
+            <h3 class="card-title">Impression overview</h3>
+            <div id="overview"></div>
+        </div>
+        <div class="card">
+            <h3 class="card-title">Social Impression</h3>
+            <div id="social"></div>
+        </div>
+    </div>
+{% endblock %}
 
+{% block scripts %}
+    <script src="{{ url_for('static', filename='script/apex.js') }}" ></script>
+    <script src="{{ url_for('static', filename='script/dashboard.js') }}" ></script>
 {% endblock %}
