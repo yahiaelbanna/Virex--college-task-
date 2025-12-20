@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import hashlib
 import re
-from datetime import date
+from datetime import date,datetime
 import random
 
 app = Flask(__name__)
@@ -26,7 +26,27 @@ def init_db():
             username VARCHAR(100) NOT NULL UNIQUE,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE,
-            password VARCHAR(200) NOT NULL
+            password VARCHAR(200) NOT NULL,
+            country VARCHAR(100),
+            avatar VARCHAR(100)
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS social (
+            user_id INTEGER NOT NULL,
+            social VARCHAR(100) NOT NULL,
+            url VARCHAR(100) NOT NULL,
+            visible INTEGER,
+            click INTEGER DEFAULT 0,
+            UNIQUE(user_id, social)
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS impression (
+            user_id INTEGER NOT NULL,
+            views INTEGER DEFAULT 0,
+            month TEXT NOT NULL,
+            UNIQUE(user_id,month)
         )
     ''')
     conn.commit()
@@ -208,7 +228,68 @@ def social():
     if not user_id:
         return redirect(url_for('loginPage'))
     user = get_user(user_id)
-    return render_template('social.html', user=user)
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT `social`,`url`,`visible` FROM social where user_id = ?',user_id) 
+    social__ = cursor.fetchall()
+    # social ={}
+    social = {'discord': {'url': '', 'visible': 1}, 'facebook': {'url': '', 'visible': 1}, 'github': {'url': '', 'visible': 1}, 'linkedin': {'url': '', 'visible': 1}, 'medium': {'url': '', 'visible': 1}, 'pinterest': {'url': '', 'visible': 1}, 'reddit': {'url': '', 'visible': 1}, 'snapchat': {'url': '', 'visible': 1}, 'spotify': {'url': '', 'visible': 1}, 'telegram': {'url': '', 'visible': 1}, 'tiktok': {'url': '', 'visible': 1}, 'whatsapp': {'url': '', 'visible': 1}, 'youtube': {'url': '', 'visible': 1}}
+
+    for soc in social__:
+        social[soc[0]] = {'url':soc[1],'visible':soc[2]}
+
+    print(social)
+    return render_template('social.html', user=user,social=social)
+
+@app.route('/social', methods=['POST'])
+def socialMethod():
+    if request.method == 'POST':
+        data = request.form
+        user_id = request.cookies.get('user_id')
+        if not user_id:
+            return redirect(url_for('loginPage'))
+        user = get_user(user_id)
+
+        social_data = {}
+
+        for key, value in request.form.items():
+            if key.startswith('social['):
+                name = key.split('[')[1].split(']')[0]
+                index = key.split('[')[2].split(']')[0]
+
+                if name not in social_data:
+                    social_data[name] = {'url': '', 'visible': 0}
+
+                if index == '0':
+                    social_data[name]['url'] = value
+                elif index == '1' and value == 'on':
+                    social_data[name]['visible'] = 1
+        
+        conn = sqlite3.connect('virex.db', timeout=10)
+        cursor = conn.cursor()
+        for social, data in social_data.items():
+            cursor.execute(
+                '''
+                INSERT INTO social (user_id, social, url, visible)
+                VALUES (?, ?, ?, ?)
+                ON CONFLICT(user_id, social)
+                DO UPDATE SET
+                url = excluded.url,
+                visible = excluded.visible
+                ''',
+                (user_id, social, data['url'], data['visible'])
+            )
+
+        conn.commit()
+    
+    social = {'discord': {'url': '', 'visible': 1}, 'facebook': {'url': '', 'visible': 1}, 'github': {'url': '', 'visible': 1}, 'linkedin': {'url': '', 'visible': 1}, 'medium': {'url': '', 'visible': 1}, 'pinterest': {'url': '', 'visible': 1}, 'reddit': {'url': '', 'visible': 1}, 'snapchat': {'url': '', 'visible': 1}, 'spotify': {'url': '', 'visible': 1}, 'telegram': {'url': '', 'visible': 1}, 'tiktok': {'url': '', 'visible': 1}, 'whatsapp': {'url': '', 'visible': 1}, 'youtube': {'url': '', 'visible': 1}}
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT `social`,`url`,`visible` FROM social where user_id = ?',user_id) 
+    social__ = cursor.fetchall()
+    for soc in social__:
+        social[soc[0]] = {'url':soc[1],'visible':soc[2]}
+    return render_template('social.html', user=user,social=social)
 
 
 '''
@@ -238,11 +319,50 @@ def profile():
 
 @app.route('/@<username>')
 def socialProfile(username):
-    user_id = request.cookies.get('user_id')
-    if not user_id:
-        return redirect(url_for('loginPage'))
     user = get_user_with_username(username)
-    return render_template('socialProfile.html', user=user)
+    user_id = user['id']
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT `social`,`url`,`visible` FROM social where user_id = ?',(user_id,)) 
+    social__ = cursor.fetchall()
+    social =[]
+
+    for soc in social__:
+        social.append({'social':soc[0],'url':soc[1],'visible':soc[2]})
+
+    soc_icon = {
+        'github' : 'github',
+        'discord' : 'discord',
+        'linkedin' : 'linkedin-02',
+        'tiktok' : 'tiktok',
+        'facebook' : 'facebook-02',
+        'youtube' : 'youtube',
+        'snapchat' : 'snapchat',
+        'medium' : 'medium',
+        'spotify' : 'spotify',
+        'whatsapp' : 'whatsapp',
+        'telegram' : 'telegram',
+        'pinterest' : 'pinterest',
+        'reddit' : 'reddit',
+    }
+
+    current_month = datetime.now().strftime('%Y-%m')
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        '''
+        INSERT INTO impression (user_id, views, month)
+        VALUES (?, 1, ?)
+        ON CONFLICT(user_id, month)
+        DO UPDATE SET
+            views = views + 1
+        ''',
+        (user_id, current_month)
+    )
+    
+    conn.commit()
+    return render_template('socialProfile.html', user=user,social=social,soc_icon=soc_icon)
 
 if __name__ == '__main__':
     init_db()

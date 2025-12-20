@@ -3,110 +3,110 @@
 {% block content %}
 <div>
     <h2 style="margin: 20px 0;">Add Your Social cards</h2>
-    <form action="">
+    <form action="{{url_for('social')}}" method="post">
         <div class="grid-2">
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-github"></i></span>
-                <input type="text" placeholder="Enter your github account url" name="social[github][0]">
+                <input type="text" placeholder="Enter your github account url" name="social[github][0]" value="{{social.github.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[github][1]">
+                    <input type="checkbox" {% if social.github.visible %}checked{% endif %} name="social[github][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-discord"></i></span>
-                <input type="text" placeholder="Enter your discord account url" name="social[discord][0]">
+                <input type="text" placeholder="Enter your discord account url" name="social[discord][0]" value="{{social.discord.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[discord][1]">
+                    <input type="checkbox" {% if social.discord.visible %}checked{% endif %} name="social[discord][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-linkedin-02"></i></span>
-                <input type="text" placeholder="Enter your linkedin account url" name="social[linkedin][0]">
+                <input type="text" placeholder="Enter your linkedin account url" name="social[linkedin][0]" value="{{social.linkedin.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[linkedin][1]">
+                    <input type="checkbox" {% if social.linkedin.visible %}checked{% endif %} name="social[linkedin][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-tiktok"></i></span>
-                <input type="text" placeholder="Enter your tiktok account url" name="social[tiktok][0]">
+                <input type="text" placeholder="Enter your tiktok account url" name="social[tiktok][0]" value="{{social.tiktok.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[tiktok][1]">
+                    <input type="checkbox" {% if social.tiktok.visible %}checked{% endif %} name="social[tiktok][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-facebook-02"></i></span>
-                <input type="text" placeholder="Enter your facebook account url" name="social[facebook][0]">
+                <input type="text" placeholder="Enter your facebook account url" name="social[facebook][0]" value="{{social.facebook.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[facebook][1]">
+                    <input type="checkbox" {% if social.facebook.visible %}checked{% endif %} name="social[facebook][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-youtube"></i></span>
-                <input type="text" placeholder="Enter your youtube account url" name="social[youtube][0]">
+                <input type="text" placeholder="Enter your youtube account url" name="social[youtube][0]" value="{{social.youtube.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[youtube][1]">
+                    <input type="checkbox" {% if social.youtube.visible %}checked{% endif %} name="social[youtube][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-snapchat"></i></span>
-                <input type="text" placeholder="Enter your snapchat account url" name="social[snapchat][0]">
+                <input type="text" placeholder="Enter your snapchat account url" name="social[snapchat][0]" value="{{social.snapchat.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[snapchat][1]">
+                    <input type="checkbox" {% if social.snapchat.visible %}checked{% endif %} name="social[snapchat][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-medium"></i></span>
-                <input type="text" placeholder="Enter your medium account url" name="social[medium][0]">
+                <input type="text" placeholder="Enter your medium account url" name="social[medium][0]" value="{{social.medium.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[medium][1]">
+                    <input type="checkbox" {% if social.medium.visible %}checked{% endif %} name="social[medium][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-spotify"></i></span>
-                <input type="text" placeholder="Enter your spotify account url" name="social[spotify][0]">
+                <input type="text" placeholder="Enter your spotify account url" name="social[spotify][0]" value="{{social.spotify.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[spotify][1]">
+                    <input type="checkbox" {% if social.spotify.visible %}checked{% endif %} name="social[spotify][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-whatsapp"></i></span>
-                <input type="text" placeholder="Enter your whatsapp account url" name="social[whatsapp][0]">
+                <input type="text" placeholder="Enter your whatsapp account url" name="social[whatsapp][0]" value="{{social.whatsapp.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[whatsapp][1]">
+                    <input type="checkbox" {% if social.whatsapp.visible %}checked{% endif %} name="social[whatsapp][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-telegram"></i></span>
-                <input type="text" placeholder="Enter your telegram account url" name="social[telegram][0]">
+                <input type="text" placeholder="Enter your telegram account url" name="social[telegram][0]" value="{{social.telegram.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[telegram][1]">
+                    <input type="checkbox" {% if social.telegram.visible %}checked{% endif %} name="social[telegram][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-pinterest"></i></span>
-                <input type="text" placeholder="Enter your pinterest account url" name="social[pinterest][0]">
+                <input type="text" placeholder="Enter your pinterest account url" name="social[pinterest][0]" value="{{social.pinterest.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[pinterest][1]">
+                    <input type="checkbox" {% if social.pinterest.visible %}checked{% endif %} name="social[pinterest][1]">
                 </span>
             </div>
             <div class="input-container">
                 <span class="social-icon"><i class="hgi hgi-stroke hgi-reddit"></i></span>
-                <input type="text" placeholder="Enter your reddit account url" name="social[reddit][0]">
+                <input type="text" placeholder="Enter your reddit account url" name="social[reddit][0]" value="{{social.reddit.url}}">
                 <span class="check-container">
                     <i class="hgi hgi-stroke hgi-eye"></i>
-                    <input type="checkbox" checked name="social[reddit][1]">
+                    <input type="checkbox" {% if social.reddit.visible %}checked{% endif %} name="social[reddit][1]">
                 </span>
             </div>
         </div>

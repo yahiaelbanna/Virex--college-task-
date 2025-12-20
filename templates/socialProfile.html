@@ -20,14 +20,14 @@
         <div class="info">
             <h1>{{user.name}}</h1>
             <div class="grid-2">
-                <a href="#">
-                    <i class="hgi hgi-stroke hgi-facebook-02"></i>
-                    <p>Facebook account</p>
-                </a>
-                <a href="#">
-                    <i class="hgi hgi-stroke hgi-facebook-02"></i>
-                    <p>Facebook account</p>
-                </a>
+                {% for soc in social %}
+                    {%if soc.url != '' and soc.visible%}
+                        <a href="{{soc.url}}">
+                            <i class="hgi hgi-stroke hgi-{{soc_icon[soc.social]}}"></i>
+                            <p>{{soc.social}} account</p>
+                        </a>
+                    {%endif%}
+                {% endfor %}
             </div>
         </div>
     </main>
