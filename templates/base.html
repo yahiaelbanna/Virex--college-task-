@@ -11,13 +11,13 @@
 <body>
     <nav>
         <ul>
-            <li class="active">
-                <a href=""><i class="hgi hgi-stroke hgi-home-01"></i> Home</a>
+            <li {% if request.path == '/' %}class="active"{% endif %}>
+                <a href="{{url_for('index')}}"><i class="hgi hgi-stroke hgi-home-01"></i> Home</a>
             </li>
-            <li>
-                <a href=""><i class="hgi hgi-stroke hgi-share-07"></i> Social</a>
+            <li {% if request.path == '/social' %}class="active"{% endif %}>
+                <a href="{{url_for('social')}}"><i class="hgi hgi-stroke hgi-share-07"></i> Social</a>
             </li>
-            <li>
+            <li {% if request.path == '/profile' %}class="active"{% endif %}>
                 <a href=""><i class="hgi hgi-stroke hgi-user"></i> Profile</a>
             </li>
         </ul>

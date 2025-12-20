@@ -139,6 +139,7 @@ footer p{
     display: flex;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
 }
 .card .card-icon{
     padding: 10px;
@@ -152,4 +153,56 @@ footer p{
     align-items: center;
     background: oklch(from var(--dark-amethyst) l c h / 0.8);
     color: var(--main-white);
+}
+
+
+/* Socail page */
+
+.input-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid oklch(from var(--main-black) l c h / 0.25);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+.input-container .social-icon{
+    width: 50px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-container .check-container{
+    position: relative;
+    width: 55px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:has(input:checked){
+        background: #673ab7;
+        color: var(--main-white);
+    }
+}
+.input-container .check-container input{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.input-container input{
+    border-radius: 0;
+    border-top: 0;
+    border-bottom: 0;
+    padding: 10px;
+    width: 100%;
 }

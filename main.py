@@ -175,6 +175,21 @@ def index():
     user = get_user(user_id)
     return render_template('index.html', user=user)
 
+'''
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::SOCIAL PAGE:::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+'''
+
+@app.route('/social')
+def social():
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        return redirect(url_for('loginPage'))
+    user = get_user(user_id)
+    return render_template('social.html', user=user)
 
 if __name__ == '__main__':
     init_db()
