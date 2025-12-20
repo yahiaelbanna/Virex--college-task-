@@ -2,10 +2,16 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import hashlib
 import re
+import os
 from datetime import date,datetime
 import random
+from os.path import join, dirname, realpath
+from werkzeug.utils import secure_filename
+import uuid
 
 app = Flask(__name__)
+
+UPLOADS_PATH = join(dirname(realpath(__file__)), 'static\\img')
 
 # CREATE CONTEXT FOR APP NAME
 @app.context_processor
@@ -108,7 +114,7 @@ def get_user(id):
 # Create_account_method
 def signup(data):
     username = data['name'].replace(" ", "")
-    user = get_user_with_email(username)
+    user = get_user_with_username(username)
     while user is not None:
         username = data['name'].replace(" ", "") + str(random.randint(1, 725))
         user = get_user_with_username(username)
@@ -305,6 +311,46 @@ def profile():
     user_id = request.cookies.get('user_id')
     if not user_id:
         return redirect(url_for('loginPage'))
+    user = get_user(user_id)
+    return render_template('profile.html', user=user)
+
+
+@app.route('/profile', methods=['POST'])
+def profileMethod():
+    if request.method == 'POST':
+        data = request.form
+        user_id = request.cookies.get('user_id')
+        if not user_id:
+            return redirect(url_for('loginPage'))
+    username = data['username'].replace(" ", "")
+    user = get_user_with_username(username)
+    while user is not None and user['id'] == user_id:
+        username = data['username'].replace(" ", "") + str(random.randint(1, 725))
+        user = get_user_with_username(username)
+
+    avatar = None
+    if 'image' in request.files and request.files['image'].filename != '':
+        image = request.files['image']
+        ext = os.path.splitext(image.filename)[1]
+        random_name = f"{uuid.uuid4().hex}{ext}"
+        image_path = os.path.join(UPLOADS_PATH, secure_filename(random_name))
+        image.save(image_path)
+
+        avatar = random_name
+
+    conn = sqlite3.connect('virex.db')
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        '''
+        UPDATE users SET
+            username = ?,name=?,email=?,country=?, avatar=?
+        WHERE id=?
+        ''',
+        (username, data['name'], data['email'], data['country'],avatar, user_id)
+    )
+    
+    conn.commit()
     user = get_user(user_id)
     return render_template('profile.html', user=user)
 
