@@ -10,7 +10,7 @@
             <span class="card-icon"><i class="hgi hgi-stroke hgi-property-view"></i> </span>
             <div class="card-body">
                 <h3 class="card-title">Total views</h3>
-                <p>400</p>
+                <p>{{ data.total_views }}</p>
             </div>
         </div>
         <div class="card">
@@ -19,7 +19,7 @@
             </span>
             <div class="card-body">
                 <h3 class="card-title">Total Clicks</h3>
-                <p>270</p>
+                <p>{{ data.total_clicks }}</p>
             </div>
         </div>
         <div class="card">
@@ -28,7 +28,7 @@
             </span>
             <div class="card-body">
                 <h3 class="card-title">Public Links</h3>
-                <p>7</p>
+                <p>{{ data.public_links }}</p>
             </div>
         </div>
         <div class="card">
@@ -37,7 +37,7 @@
             </span>
             <div class="card-body">
                 <h3 class="card-title">Draft Links</h3>
-                <p>4</p>
+                <p>{{ data.draft_links }}</p>
             </div>
         </div>
     </div>
@@ -56,5 +56,68 @@
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='script/apex.js') }}" ></script>
-    <script src="{{ url_for('static', filename='script/dashboard.js') }}" ></script>
+    <!-- <script src="{{ url_for('static', filename='script/dashboard.js') }}" ></script> -->
+    <script>
+        var monthLabels = {{ month_labels | tojson }};
+        var monthData = {{ month_data | tojson }};
+        var socialLabels = {{ social_labels | tojson }};
+        var socialData = {{ social_data | tojson }};
+
+        var series1Data = monthData;
+        var series2Data = [];
+
+        var overviewOptions = {
+            chart: {
+                height: 350,
+                type: "area"
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [
+                {
+                    name: "Impressions",
+                    data: series1Data
+                }
+            ],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                }
+            },
+            xaxis: {
+                categories: monthLabels
+            }
+        };
+
+        var socialOptions = {
+            series: socialData,
+            chart: {
+                height: 350,
+                type: 'donut',
+            },
+            labels: socialLabels,
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        var overviewChart = new ApexCharts(document.querySelector("#overview"), overviewOptions);
+        var socialChart = new ApexCharts(document.querySelector("#social"), socialOptions);
+
+        overviewChart.render();
+        socialChart.render();
+    </script>
 {% endblock %}

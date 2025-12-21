@@ -20,6 +20,9 @@
             <li {% if request.path == '/profile' %}class="active"{% endif %}>
                 <a href="{{url_for('profile')}}"><i class="hgi hgi-stroke hgi-user"></i> Profile</a>
             </li>
+            <li>
+                <a href="/@{{user.username}}" target="_blank"><i class="hgi hgi-stroke hgi-identity-card"></i> Card</a>
+            </li>
         </ul>
         <div class="avatar">
             <img src="{{ url_for('static', filename='img') }}/{{user.avatar}}" alt="Avatar">

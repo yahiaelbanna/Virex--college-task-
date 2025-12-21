@@ -218,7 +218,42 @@ def index():
     if not user_id:
         return redirect(url_for('loginPage'))
     user = get_user(user_id)
-    return render_template('index.html', user=user)
+    data = {}
+    conn = sqlite3.connect('virex.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT SUM(views) AS total_views FROM impression WHERE user_id = ?", (user_id,))
+    data['total_views'] = cursor.fetchone()['total_views'] or 0
+
+    cursor.execute("SELECT SUM(click) AS total_clicks FROM social WHERE user_id = ?", (user_id,))
+    data['total_clicks'] = cursor.fetchone()['total_clicks'] or 0
+    
+    cursor.execute("SELECT COUNT(*) AS public_links FROM social WHERE user_id = ? AND visible = 1 AND url != ''", (user_id,))
+    data['public_links'] = cursor.fetchone()['public_links']
+    
+    cursor.execute("SELECT COUNT(*) AS draft_links FROM social WHERE user_id = ? AND visible = 0 AND url != ''", (user_id,))
+    data['draft_links'] = cursor.fetchone()['draft_links']
+
+    cursor.execute("SELECT month, views FROM impression WHERE user_id = ? ORDER BY month LIMIT 7", (user_id,))
+    impression_rows = cursor.fetchall()
+    data['impression_chart'] = [dict(row) for row in impression_rows]
+    
+    cursor.execute("SELECT social, click FROM social WHERE user_id = ?", (user_id,))
+    social_rows = cursor.fetchall()
+    data['social_impressions'] = [dict(row) for row in social_rows]
+
+    '''
+        CHARTS DATA
+    '''
+    month_labels = [item['month'] for item in data['impression_chart']]
+    month_data = [item['views'] for item in data['impression_chart']]
+    
+    social_labels = [item['social'] for item in data['social_impressions']]
+    social_data = [item['click'] for item in data['social_impressions']]
+
+    conn.close()
+    print(data)
+    return render_template('index.html', user=user,data=data,month_labels=month_labels,month_data=month_data,social_labels=social_labels,social_data=social_data)
 
 '''
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
