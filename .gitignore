@@ -1,3 +1,3 @@
-static/img/*
+# static/img/*
 virex.db
 *.db

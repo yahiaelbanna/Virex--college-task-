@@ -25,7 +25,7 @@
             </li>
         </ul>
         <div class="avatar">
-            <img src="{{ url_for('static', filename='img') }}/{{user.avatar}}" alt="Avatar">
+            <img src="{{ url_for('static', filename='img/' ~ (user.avatar if user.avatar else '760f258dafc7451fba6619b84821f07d.jpg')) }}" alt="Avatar">
         </div>
     </nav>
     <main>

@@ -3,7 +3,7 @@
 {% block content %}
 <form class="profile-form" action="/profile" method="post" enctype="multipart/form-data">
     <div class="avatar-st">
-        <img src="{{ url_for('static', filename='img') }}/{{user.avatar}}" alt="avatar" id="avatar">
+        <img src="{{ url_for('static', filename='img/' ~ (user.avatar if user.avatar else '760f258dafc7451fba6619b84821f07d.jpg')) }}" alt="avatar" id="avatar">
         <input type="file" accept=".jpg, .jpeg" id="avatarInput" name="image">
     </div>
     <div class="grid-2">
