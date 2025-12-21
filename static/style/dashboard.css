@@ -50,7 +50,21 @@ nav ul li{
     &:hover::after,&.active::after{
         width: 100%;
     }
-
+}
+.avatar{
+    --size: 45px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 100%;
+    border: 1px solid var(--dark-amethyst);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.avatar img{
+    width: 100%;
+    object-fit: cover;
 }
 
 main{
